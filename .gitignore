@@ -1,22 +1,102 @@
-# Compiled class file
-*.class
+package listaExercicios28_33;
 
-# Log file
-*.log
+//Classe principal saca , deposita , retorna status da conta corrente
 
-# BlueJ files
-*.ctxt
+public class ContaCorrenteExe2 {
+	private String titular;
+	private String tipoConta;
+	private String agencia;
+	private String nrConta;
+	private double saldo;
+	private boolean chequeEspecial;
+	double[] limite;
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+	public String getTitular() {
+		return titular;
+	}
 
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
+	public void setTitular(String titular) {
+		this.titular = titular;
+	}
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+	public String getTipoConta() {
+		return tipoConta;
+	}
+
+	public void setTipoConta(String tipoConta) {
+		this.tipoConta = tipoConta;
+	}
+
+	public String getAgencia() {
+		return agencia;
+	}
+
+	public void setAgencia(String agencia) {
+		this.agencia = agencia;
+	}
+
+	public String getNrConta() {
+		return nrConta;
+	}
+
+	public void setNrConta(String nrConta) {
+		this.nrConta = nrConta;
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
+
+	public boolean isChequeEspecial() {
+		return chequeEspecial;
+	}
+
+	public void setChequeEspecial(boolean chequeEspecial) {
+		this.chequeEspecial = chequeEspecial;
+	}
+
+	void depositar(double deposito) {
+		
+		this.saldo += deposito;
+		
+		if (this.saldo >= 0) {
+			restaurarLimite();
+		}
+
+	}
+
+	void sacar(double saque) {
+		if (this.saldo >= saque) {
+			this.saldo -= saque;
+		} else if (this.saldo < saque && this.limite[0] >= saque) {
+			this.saldo -= saque;
+			this.limite[0] += this.saldo;
+			this.chequeEspecial = true;
+		} else {
+			System.out.println("Não foi possivel realizar a operação \n "
+					+ "Favor verificar seu limite de saque.");
+		}
+
+	}
+
+	void consultar() {
+		String text="";
+		if(this.chequeEspecial==true) {
+			text="Sim";
+		}else {
+			text="Não";
+		}
+		System.out.println(this.getTitular() + " " + this.getAgencia() + " " + this.getNrConta() + " " + this.getSaldo()
+				+ "" + " " + this.limite[0] + " " +"Usando cheque especial?"+ text);
+	}
+//quando o saldo se torna positivo novamente o valor do limite inicial é restaurado.
+	void restaurarLimite() {
+		this.limite[0] = this.limite[1];
+		this.chequeEspecial = false;
+	}
+}
+
